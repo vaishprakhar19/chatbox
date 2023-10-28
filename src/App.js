@@ -2,7 +2,7 @@ import { useState } from 'react';
 import './App.css';
 import Home from "./components/Home";
 import {auth,provider} from "./firebase-config"
-import {signInWithPopup} from "firebase/auth"
+import {signInWithPopup, signOut} from "firebase/auth"
 
 function App() {
 
@@ -13,11 +13,17 @@ function App() {
       localStorage.setItem(isLoggedIn,"true");
   }
 
+  const logout=async ()=>{
+    await signOut(auth);
+    setIsLoggedIn(false);
+    localStorage.clear();
+  }
+
   return (
     <div className="App">
       <h1>Chatbox</h1>
       <Home/>
-      {isLoggedIn ? <button onClick={login}>LOGIN</button> :<button></button> }
+      {isLoggedIn ? <button onClick={login}>LOGIN</button> :<button onClick={logout}>LOGOUT</button> }
     </div>
   );
 }

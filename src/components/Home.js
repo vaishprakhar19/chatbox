@@ -3,12 +3,12 @@ import {addDoc, collection, serverTimestamp} from "firebase/firestore";
 import {auth, db} from "../firebase-config"
 
 export default function Home() {
-    const [message,setMessage]=useState("");
+    const [message,setMessage]=useState(localStorage.getItem("isLoggedIn"));
 
     const collectionRef=collection(db,"messages");
 
     const sendMessage= async ()=>{
-        await addDoc(collectionRef,{message,author:auth.currentUser,time:serverTimestamp});
+        await addDoc(collectionRef,{message,author:auth.currentUser.displayName,time:serverTimestamp});
     }
 
   return (
