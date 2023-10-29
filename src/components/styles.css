@@ -1,0 +1,30 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+.message-box{
+    background-color: rgb(72, 90, 255);
+    border-radius: 50px;
+    width:fit-content;
+    padding:5px 50px;
+    margin:20px auto;
+}
+
+#input{
+    width:30%;
+    font-size: 25px;
+    border: none;
+    border-radius: 5px;
+    border: 2px solid blue;
+}
+
+#send-button{
+    font-size: 20px;
+    background-color: rgb(125, 144, 255);
+    border: none;
+    padding: 10px;
+    border-radius: 100%;
+    margin: 10px;
+}

@@ -25,9 +25,9 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Chatbox</h1>
-      <Home />
-      {isLoggedIn ? (<button onClick={logout}>LOGOUT</button>) : (<button onClick={login}>LOGIN</button>)}
+      <h1 id="heading">Chatbox</h1>
+      {isLoggedIn ? (<button className='login-button' onClick={logout}>LOGOUT</button>) : (<button className="login-button" onClick={login}>LOGIN</button>)}
+      <Home/>
     </div>
   );
 }

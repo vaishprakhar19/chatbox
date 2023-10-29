@@ -1,3 +1,10 @@
 .App {
   text-align: center;
 }
+.login-button{
+  font-size: 20px;
+  background-color: aquamarine;
+  border: none;
+  border-radius: 10px;
+  padding: 10px;
+}
