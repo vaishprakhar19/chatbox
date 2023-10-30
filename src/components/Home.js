@@ -8,11 +8,10 @@ export default function Home() {
     const [messageList,setMessageList]=useState([]);
     const collectionRef=collection(db,"messages");
 
-    const date=new Date();
-    // const temp=[{message:"Hi",author:"Prakash",time:date},{message:"hello",author:"Dalla",time:date}];//TEMPORARY
+    // const temp=[{message:"Hi",author:"Prakash",time:date},{message:"hello",author:"Dalla"];//TEMPORARY
 
     const sendMessage= async ()=>{
-        await addDoc(collectionRef,{message,author:auth.currentUser.displayName,time:new Date()});
+        await addDoc(collectionRef,{message,author:auth.currentUser.displayName});
     }
 
     useEffect(()=>{
