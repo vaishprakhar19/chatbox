@@ -3,7 +3,7 @@ import {addDoc, collection, getDocs} from "firebase/firestore";
 import {auth, db} from "../firebase-config";
 import "./styles.css";
 
-export default function Home() {
+export default function Home(props) {
     const [message,setMessage]=useState("");
     const [messageList,setMessageList]=useState([]);
     const collectionRef=collection(db,"messages");
@@ -15,11 +15,14 @@ export default function Home() {
     }
 
     useEffect(()=>{
+
+      if(props.isLoggedIn){
         const getMessages= async ()=>{
             const data = await getDocs(collectionRef);
             setMessageList(data.docs.map((item)=>({...item.data()})));
         };
         getMessages();
+      }
     });
 
     
