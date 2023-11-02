@@ -1,15 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { addDoc, collection, getDocs, orderBy, query } from "firebase/firestore";
+import { addDoc, collection, getDocs, onSnapshot, orderBy, query } from "firebase/firestore";
 import { auth, db } from "../firebase-config";
 import "./styles.css";
 
 export default function Home(props) {
-  const [message, setMessage] = useState("");
-  const [date, setDate] = useState("");
+  let message = "";
+  let date="";
   const [messageList, setMessageList] = useState([]);
   const collectionRef = collection(db, "messages");
 
   const sendMessage = async () => {
+    message=document.getElementById("input").value;
+    date=new Date().toString();
     await addDoc(collectionRef, { message, author: auth.currentUser.displayName, date });
   }
 
@@ -20,28 +22,27 @@ export default function Home(props) {
   
   useEffect(() => {
     if (props.isLoggedIn) {
-      const getMessages = async () => {
-        const data = await getDocs(query(collectionRef,orderBy('date')));
-        setMessageList(data.docs.map((item) => ({ ...item.data() })));
-      };
-      getMessages();
+      const unsub= onSnapshot(query(collectionRef,orderBy("date")),(snapshot)=>{
+        setMessageList(snapshot.docs.map((item)=>({...item.data(),id:item.id})))
+      })
+      // const data = await getDocs(query(collectionRef,orderBy('date')));
+      // setMessageList(data.docs.map((item) => ({ ...item.data() })));
+      return unsub;
     }
-  },[messageList,setMessageList]);
+    },[]);
+
 
   return (
     <div>
       <div className='input-box'>
-        <input id="input" type="textarea" onChange={(event) => {
-          setMessage(event.target.value);
-          setDate(new Date().toString());
-        }}></input>
+        <input id="input" type="textarea"></input>
         <button id="send-button" onClick={sendMessage}>✈</button>
       </div>
       <div className='messages-container'>
       { 
         messageList.map((item) => {
         // temp.map((item) => {
-          return <div className="message-box">
+          return <div key={item.id} className="message-box">
             <div className='author'>
               {item.author}:
               <br></br>
