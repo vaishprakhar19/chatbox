@@ -1,0 +1,86 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 60px;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: white;
+    height: 80px;
+    position: fixed;
+    width: 100%;
+    z-index: 100;
+    background-color: var(--blue);
+    backdrop-filter: blur(5px);
+    align-items: center;
+    box-shadow: 0px 5px 20px var(--blue);
+    position:absolute;
+    left:0;
+    top:0;
+}
+
+.navlinks {
+    display: flex;
+    gap: 3vw;
+    cursor: pointer;
+}
+
+.navlink {
+    text-decoration: none;
+    color: white;
+    transition: 0.3s;
+}
+
+.navlink:hover {
+    color: var(--yellow);
+}
+
+.toggle-button {
+    width: 20px;
+    height: 20px;
+    color: white;
+    display: none;
+}
+
+.logo{
+    display: flex;
+    align-items: center;
+    width:fit-content;
+    gap:20px;
+    cursor: pointer;
+}
+.logo img {
+    width: 50px;
+    clip-path: circle(25px);
+}
+
+@media screen and (max-width: 768px) {
+    .navbar {
+        padding: 2px 20px;
+    }
+
+    .navlinks {
+        display: none;
+    }
+
+    .show {
+        display: flex;
+        gap: 3vw;
+        cursor: pointer;
+        position: absolute;
+        top: 80px;
+        left: 20px;
+        width: 85%;
+        padding: 25px;
+        flex-direction: column;
+        background-color: var(--blue);
+        box-shadow: 0px 0px 20px black;
+    }
+
+    .toggle-button {
+        display: inline-block;
+    }
+
+    .navbar .button{
+        font-size: 15px;
+    }
+}

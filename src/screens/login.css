@@ -1,0 +1,105 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap');
+
+@media (max-width:768px) {
+    .login {
+        flex-direction: column !important;
+        margin: auto auto;
+        height: 100vh !important;
+        gap: 0px;
+        background-size: 600% !important;
+        background-repeat: no-repeat;
+        padding: 10rem 0px !important;
+    }
+
+    .info {
+        width: 100% !important;
+        color: white !important;
+    }
+
+    #logo {
+        width: 18rem !important;
+        height: 18rem !important;
+    }
+}
+
+#logo {
+    width: 27vw;
+    height: 27vw;
+}
+
+.heading {
+    font-size: 50px;
+}
+
+.login {
+    background: url('../resources/chatapp-bg.jpg');
+    background-size: cover;
+    background-position: 80% 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+    padding: 6rem;
+}
+
+.info {
+    color: var(--blue);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: center;
+    padding: 20px;
+    align-items: center;
+    width: 50%;
+}
+
+.info p {
+    font-size: max(1.4vw, 18px);
+}
+
+.login .button {
+    margin: 30px 0px 30px 0px;
+    background-color: var(--blue);
+    color: var(--yellow);
+    font-weight: 900;
+}
+
+.login .button:hover {
+    background-color: var(--yellow);
+    color: var(--blue);
+    box-shadow: 0 0 0 3px var(--blue);
+}
+
+.blur {
+    width: 100vw;
+    height: 100vh;
+    backdrop-filter: blur(5px);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    filter: brightness(0.7);
+}
+
+.button {
+    font-size: 17px;
+    background-color: var(--yellow);
+    color: var(--blue);
+    border: none;
+    border-radius: 8px;
+    width: 100px;
+    height: 45px;
+    transition: .3s;
+    width: auto;
+    height: auto;
+    padding: 7px 20px 10px 20px;
+}
+
+.button:hover {
+    background-color: var(--blue);
+    color: #ffffff;
+    box-shadow: 0 0 0 3px var(--yellow);
+}
