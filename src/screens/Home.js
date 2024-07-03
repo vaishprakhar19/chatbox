@@ -25,15 +25,11 @@ export default function Home({ isLoggedIn }) {
     if (isLoggedIn) {
       const unsub = onSnapshot(query(collectionRef, orderBy("date")), (snapshot) => {
         setMessageList(snapshot.docs.map((item) => ({ ...item.data(), id: item.id })));
-        // scrollToBottom();
+        scrollToBottom();
       });
       return () => unsub(); // Cleanup subscription on unmount
     }
   }, [isLoggedIn,collectionRef]);
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messageList]);
 
   return (
     <div className='home'>
