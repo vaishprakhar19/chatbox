@@ -20,6 +20,19 @@
         width: 18rem !important;
         height: 18rem !important;
     }
+
+    .blur {
+        width: 100vw;
+        height: 100vh;
+        backdrop-filter: blur(5px);
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        overflow: hidden;
+        filter: brightness(0.7);
+    }
 }
 
 #logo {
@@ -71,18 +84,6 @@
     box-shadow: 0 0 0 3px var(--blue);
 }
 
-.blur {
-    width: 100vw;
-    height: 100vh;
-    backdrop-filter: blur(5px);
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    overflow: hidden;
-    filter: brightness(0.7);
-}
 
 .button {
     font-size: 17px;
