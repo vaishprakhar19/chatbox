@@ -29,7 +29,7 @@ export default function Home({ isLoggedIn }) {
       });
       return () => unsub(); // Cleanup subscription on unmount
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn,collectionRef]);
 
   useEffect(() => {
     scrollToBottom();

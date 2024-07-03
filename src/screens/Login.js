@@ -1,7 +1,6 @@
 import React from 'react'
 import { auth, provider } from "../firebase-config"
-import { signInWithPopup, signOut } from "firebase/auth"
-import logo from "../resources/chatbox-logo.png"
+import { signInWithPopup } from "firebase/auth"
 import "./login.css"
 
 const Login = ({ setIsLoggedIn }) => {

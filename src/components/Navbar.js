@@ -2,14 +2,13 @@ import React, { useState } from 'react';
 import "./navbar.css";
 import { auth } from "../firebase-config"
 import { signOut } from "firebase/auth"
-const logoPV = process.env.PUBLIC_URL + '/resources/PV.png';
 
 function Navbar({ setIsLoggedIn, isLoggedIn }) {
-    const [showNavLinks, setShowNavLinks] = useState(false);
+    // const [showNavLinks, setShowNavLinks] = useState(false);
 
-    const toggleNavLinks = () => {
-        setShowNavLinks(!showNavLinks);
-    };
+    // const toggleNavLinks = () => {
+    //     setShowNavLinks(!showNavLinks);
+    // };
     let logout;
     try {
         logout = async () => {
