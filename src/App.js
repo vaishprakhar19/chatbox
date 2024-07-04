@@ -12,6 +12,8 @@ import { Timestamp } from 'firebase/firestore';
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem("isLoggedIn"));
   const [loading, setLoading] = useState(true);
+  const [showActiveUsers, setShowActiveUsers] = useState(false);
+  const [activeUsers, setActiveUsers] = useState([]);
   const [loginTime, setLoginTime] = useState(localStorage.getItem("loginTime") ? Timestamp.fromDate(new Date(localStorage.getItem("loginTime"))) : null);
   useEffect(() => {
     AOS.init();
@@ -49,12 +51,12 @@ function App() {
 
   return (
     <div className="App">
-      {isLoggedIn && <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />}
+      {isLoggedIn && <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} activeUsers={activeUsers} showActiveUsers={showActiveUsers} setShowActiveUsers={setShowActiveUsers} />}
       <Router>
         <Routes>
           {isLoggedIn ? (
             <>
-              <Route path='/home' element={<Home isLoggedIn={isLoggedIn} loginTime={loginTime} />} />
+              <Route path='/home' element={<Home isLoggedIn={isLoggedIn} loginTime={loginTime} setActiveUsers={setActiveUsers} activeUsers={activeUsers} showActiveUsers={showActiveUsers} setShowActiveUsers={setShowActiveUsers} />} />
               <Route path="*" element={<Navigate to="/home" />} />
             </>
           ) : (

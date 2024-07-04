@@ -4,11 +4,9 @@ import { auth, db } from "../firebase-config";
 import { Timestamp } from "firebase/firestore";
 import "./home.css";
 
-export default function Home({ isLoggedIn, loginTime }) {
+export default function Home({ isLoggedIn, loginTime, activeUsers, setActiveUsers , setShowActiveUsers, showActiveUsers}) {
   const [messageList, setMessageList] = useState([]);
   const messagesEndRef = useRef(null);
-  const [activeUsers, setActiveUsers] = useState([]);
-  const [showActiveUsers, setShowActiveUsers] = useState(false);
   console.log(messageList);
 
   const sendMessage = async () => {
@@ -50,6 +48,7 @@ export default function Home({ isLoggedIn, loginTime }) {
 
   return (
     <div className='home'>
+      <div className={`${showActiveUsers ? 'home-blur' : ''}`}></div>
       {showActiveUsers && (
         <div className='active-users-list'>
           <button className="close-button" onClick={() => setShowActiveUsers(false)}>X</button>
@@ -62,7 +61,6 @@ export default function Home({ isLoggedIn, loginTime }) {
         </div>
       )}
       <div className='input-box'>
-        <div className="active-users-button" onClick={() => { if (showActiveUsers) { setShowActiveUsers(false) } else {setShowActiveUsers(true) } }}>{activeUsers.length}</div>
         <div className='message-input'>
           {/* <div class="fileUploadWrapper">
             <label for="file">
