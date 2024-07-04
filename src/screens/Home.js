@@ -27,11 +27,20 @@ export default function Home({ isLoggedIn, loginTime }) {
     if (isLoggedIn && loginTime) {
       const collectionRef = collection(db, "messages");
       const q = query(collectionRef, orderBy("date"), where("date", ">", loginTime)); // Filter messages based on login time
-      const unsub = onSnapshot(q, (snapshot) => {
+      const unsubMessages = onSnapshot(q, (snapshot) => {
         setMessageList(snapshot.docs.map((item) => ({ ...item.data(), id: item.id })));
         scrollToBottom();
       });
-      return () => unsub(); // Cleanup subscription on unmount
+      const activeUsersRef = collection(db, "activeUsers");
+      const unsubActiveUsers = onSnapshot(activeUsersRef, (snapshot) => {
+        const activeUsersList = snapshot.docs.map(doc => doc.data());
+        setActiveUsers(activeUsersList.filter(user => user.status === 'online'));
+      });
+
+      return () => {
+        unsubMessages();
+        unsubActiveUsers();
+      }; // Cleanup subscriptions on unmount
     }
   }, [isLoggedIn, loginTime]);
 
@@ -44,13 +53,12 @@ export default function Home({ isLoggedIn, loginTime }) {
     const activeUsersRef = collection(db, "activeUsers");
     const activeUsersSnapshot = await getDocs(activeUsersRef);
     const activeUsersList = activeUsersSnapshot.docs.map(doc => doc.data());
-    setActiveUsers(activeUsersList);
-    
+    setActiveUsers(activeUsersList.filter(user => user.status === 'online'));
   }
 
   return (
     <div className='home'>
-        {showActiveUsers && (
+      {showActiveUsers && (
         <div className='active-users-list'>
           <button className="close-button" onClick={() => setShowActiveUsers(false)}>X</button>
           <h3>Active Users</h3>
@@ -62,7 +70,7 @@ export default function Home({ isLoggedIn, loginTime }) {
         </div>
       )}
       <div className='input-box'>
-        <div className="active-users-button" onClick={() => {if(showActiveUsers){setShowActiveUsers(false)} else{fetchActiveUsers(); setShowActiveUsers(true)} }}></div>
+        <div className="active-users-button" onClick={() => { if (showActiveUsers) { setShowActiveUsers(false) } else { fetchActiveUsers(); setShowActiveUsers(true) } }}>{activeUsers.length}</div>
         <div className='message-input'>
           {/* <div class="fileUploadWrapper">
             <label for="file">

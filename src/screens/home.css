@@ -227,6 +227,11 @@
   border-radius: 20px;
   box-shadow: 2px 2px 4px green;
   transition: 0.1s;
+  font-size: 13px;
+  /* line-height: 15; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .active-users-button:active{
   transform: translate(1px 1px);
