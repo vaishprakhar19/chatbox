@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { addDoc, collection, getDocs, onSnapshot, orderBy, query, where } from "firebase/firestore";
+import { addDoc, collection, onSnapshot, orderBy, query, where } from "firebase/firestore";
 import { auth, db } from "../firebase-config";
 import { Timestamp } from "firebase/firestore";
 import "./home.css";
@@ -48,14 +48,6 @@ export default function Home({ isLoggedIn, loginTime }) {
     scrollToBottom();
   }, [messageList]);
 
-
-  const fetchActiveUsers = async () => {
-    const activeUsersRef = collection(db, "activeUsers");
-    const activeUsersSnapshot = await getDocs(activeUsersRef);
-    const activeUsersList = activeUsersSnapshot.docs.map(doc => doc.data());
-    setActiveUsers(activeUsersList.filter(user => user.status === 'online'));
-  }
-
   return (
     <div className='home'>
       {showActiveUsers && (
@@ -70,7 +62,7 @@ export default function Home({ isLoggedIn, loginTime }) {
         </div>
       )}
       <div className='input-box'>
-        <div className="active-users-button" onClick={() => { if (showActiveUsers) { setShowActiveUsers(false) } else { fetchActiveUsers(); setShowActiveUsers(true) } }}>{activeUsers.length}</div>
+        <div className="active-users-button" onClick={() => { if (showActiveUsers) { setShowActiveUsers(false) } else {setShowActiveUsers(true) } }}>{activeUsers.length}</div>
         <div className='message-input'>
           {/* <div class="fileUploadWrapper">
             <label for="file">
