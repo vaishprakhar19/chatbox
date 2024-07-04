@@ -4,10 +4,10 @@ import { auth, db } from "../firebase-config";
 import { Timestamp } from "firebase/firestore";
 import "./home.css";
 
-export default function Home({ isLoggedIn }) {
+export default function Home({ isLoggedIn , loginTime}) {
   const [messageList, setMessageList] = useState([]);
   const messagesEndRef = useRef(null);
-  const [loginTime, setLoginTime] = useState(null); 
+  console.log(messageList);
 
   const sendMessage = async () => {
     const collectionRef = collection(db, "messages");
@@ -32,13 +32,6 @@ export default function Home({ isLoggedIn }) {
       return () => unsub(); // Cleanup subscription on unmount
     }
   }, [isLoggedIn, loginTime]);
-
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      setLoginTime(Timestamp.now()); // Set login time when user logs in
-    }
-  }, [isLoggedIn]);
 
   useEffect(() => {
     scrollToBottom();

@@ -8,10 +8,11 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import { auth } from './firebase-config';
 import { Comment } from 'react-loader-spinner';
+import { Timestamp } from 'firebase/firestore';
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem("isLoggedIn"));
   const [loading, setLoading] = useState(true);
-
+  const [loginTime, setLoginTime] = useState(localStorage.getItem("loginTime") ? Timestamp.fromDate(new Date(localStorage.getItem("loginTime"))) : null);
   useEffect(() => {
     AOS.init();
     AOS.refresh();
@@ -53,12 +54,12 @@ function App() {
         <Routes>
           {isLoggedIn ? (
             <>
-              <Route path='/home' element={<Home isLoggedIn={isLoggedIn} />} />
+              <Route path='/home' element={<Home isLoggedIn={isLoggedIn} loginTime={loginTime} />} />
               <Route path="*" element={<Navigate to="/home" />} />
             </>
           ) : (
             <>
-              <Route path='/' element={<Login setIsLoggedIn={setIsLoggedIn} />} />
+              <Route path='/' element={<Login setIsLoggedIn={setIsLoggedIn} setLoginTime={setLoginTime} />} />
               <Route path="*" element={<Navigate to="/" />} />
             </>
           )}
