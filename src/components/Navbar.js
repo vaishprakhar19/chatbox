@@ -2,7 +2,7 @@ import React from 'react';
 import "./navbar.css";
 import { auth } from "../firebase-config"
 import { signOut } from "firebase/auth"
-
+import logo from "../resources/chatbox-logo.png"
 function Navbar({ setIsLoggedIn, isLoggedIn }) {
     // const [showNavLinks, setShowNavLinks] = useState(false);
 
@@ -19,10 +19,14 @@ function Navbar({ setIsLoggedIn, isLoggedIn }) {
     }
     catch (err) { console.log(err); }
 
+    const handleImageError = (e) => {
+        e.target.src = {logo};
+      };
+      
     return (
         <div className='navbar'>
             <div className="logo">
-                <img src={auth.currentUser.photoURL} alt="PV"></img>
+                <img src={auth.currentUser.photoURL} alt="" onError={handleImageError}></img>
                 <p>{auth.currentUser.displayName}</p>
             </div>
                 <button className='button' onClick={logout}>Logout</button>
