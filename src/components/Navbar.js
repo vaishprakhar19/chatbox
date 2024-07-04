@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import "./navbar.css";
 import { auth, db } from "../firebase-config"
 import { signOut } from "firebase/auth"

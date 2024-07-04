@@ -4,7 +4,7 @@ import { auth, db } from "../firebase-config";
 import { Timestamp } from "firebase/firestore";
 import "./home.css";
 
-export default function Home({ isLoggedIn, loginTime, activeUsers, setActiveUsers , setShowActiveUsers, showActiveUsers}) {
+export default function Home({ isLoggedIn, loginTime, activeUsers, setActiveUsers, setShowActiveUsers, showActiveUsers }) {
   const [messageList, setMessageList] = useState([]);
   const messagesEndRef = useRef(null);
   console.log(messageList);
@@ -40,7 +40,7 @@ export default function Home({ isLoggedIn, loginTime, activeUsers, setActiveUser
         unsubActiveUsers();
       }; // Cleanup subscriptions on unmount
     }
-  }, [isLoggedIn, loginTime]);
+  }, [isLoggedIn, loginTime, setActiveUsers]);
 
   useEffect(() => {
     scrollToBottom();
