@@ -92,8 +92,9 @@ export default function Home({ isLoggedIn , loginTime}) {
         {
           messageList.map((item) => {
             const isCurrentUser = item.author === auth.currentUser.displayName;
+            const isSystemMessage = item.system;
             return (
-              <div key={item.id} className={`message-box ${isCurrentUser ? 'current-user' : ''}`}>
+              <div key={item.id} className={`message-box ${isCurrentUser ? 'current-user' : ''} ${isSystemMessage ? 'system-message' : ''}`}>
                 <div className='author'>
                   {item.author}:
                   <br />
