@@ -33,17 +33,17 @@ function App() {
   }, []);
 
   if (loading) {
-    return <Comment
-    className="loader"
-      visible={true}
-      height="80"
-      width="80"
-      ariaLabel="comment-loading"
-      wrapperStyle={{}}
-      wrapperClass="comment-wrapper"
-      color="#ffd752"
-      backgroundColor="#0068a4"
-    />;
+    return <div className='loader-container'>
+      <Comment
+        visible={true}
+        height="200"
+        width="200"
+        ariaLabel="comment-loading"
+        wrapperClass="comment-wrapper"
+        color="#ffd752"
+        backgroundColor="#0068a4"
+      />;
+    </div>
   }
 
   return (

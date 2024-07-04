@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { addDoc, collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import { addDoc, collection, onSnapshot, orderBy, query, where } from "firebase/firestore";
 import { auth, db } from "../firebase-config";
 import { Timestamp } from "firebase/firestore";
 import "./home.css";
@@ -7,6 +7,7 @@ import "./home.css";
 export default function Home({ isLoggedIn }) {
   const [messageList, setMessageList] = useState([]);
   const messagesEndRef = useRef(null);
+  const [loginTime, setLoginTime] = useState(null); 
 
   const sendMessage = async () => {
     const collectionRef = collection(db, "messages");
@@ -21,14 +22,21 @@ export default function Home({ isLoggedIn }) {
   }
 
   useEffect(() => {
-    if (isLoggedIn) {
+    if (isLoggedIn && loginTime) {
       const collectionRef = collection(db, "messages");
-      const q = query(collectionRef, orderBy("date"));
+      const q = query(collectionRef, orderBy("date"), where("date", ">", loginTime)); // Filter messages based on login time
       const unsub = onSnapshot(q, (snapshot) => {
         setMessageList(snapshot.docs.map((item) => ({ ...item.data(), id: item.id })));
         scrollToBottom();
       });
       return () => unsub(); // Cleanup subscription on unmount
+    }
+  }, [isLoggedIn, loginTime]);
+
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      setLoginTime(Timestamp.now()); // Set login time when user logs in
     }
   }, [isLoggedIn]);
 
