@@ -45,7 +45,7 @@ function App() {
         wrapperClass="comment-wrapper"
         color="#ffd752"
         backgroundColor="#0068a4"
-      />;
+      />
     </div>
   }
 
