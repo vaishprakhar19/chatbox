@@ -1,18 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { addDoc, collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { auth, db } from "../firebase-config";
+import { Timestamp } from "firebase/firestore";
 import "./home.css";
 
 export default function Home({ isLoggedIn }) {
-  let message = "";
-  let date = "";
   const [messageList, setMessageList] = useState([]);
-  const collectionRef = collection(db, "messages");
   const messagesEndRef = useRef(null);
 
   const sendMessage = async () => {
-    message = document.getElementById("messageInput").value;
-    date = new Date().toString();
+    const collectionRef = collection(db, "messages");
+    const message = document.getElementById("messageInput").value;
+    const date = Timestamp.now();
     await addDoc(collectionRef, { message, author: auth.currentUser.displayName, date });
     document.getElementById("messageInput").value = ""; // Clear input after sending
   }
@@ -23,17 +22,20 @@ export default function Home({ isLoggedIn }) {
 
   useEffect(() => {
     if (isLoggedIn) {
-      const unsub = onSnapshot(query(collectionRef, orderBy("date")), (snapshot) => {
+      const collectionRef = collection(db, "messages");
+      const q = query(collectionRef, orderBy("date"));
+      const unsub = onSnapshot(q, (snapshot) => {
         setMessageList(snapshot.docs.map((item) => ({ ...item.data(), id: item.id })));
-        // scrollToBottom();
+        scrollToBottom();
       });
       return () => unsub(); // Cleanup subscription on unmount
     }
-  }, [isLoggedIn,collectionRef]);
+  }, [isLoggedIn]);
 
   useEffect(() => {
     scrollToBottom();
   }, [messageList]);
+
 
   return (
     <div className='home'>
@@ -43,7 +45,7 @@ export default function Home({ isLoggedIn }) {
             <label for="file">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 337 337">
                 <circle
-                  stroke-width="20"
+                  strokeWidth="20"
                   stroke="#6c6c6c"
                   fill="none"
                   r="158.5"
@@ -51,14 +53,14 @@ export default function Home({ isLoggedIn }) {
                   cx="168.5"
                 ></circle>
                 <path
-                  stroke-linecap="round"
-                  stroke-width="25"
+                  strokeLinecap="round"
+                  strokeWidth="25"
                   stroke="#6c6c6c"
                   d="M167.759 79V259"
                 ></path>
                 <path
-                  stroke-linecap="round"
-                  stroke-width="25"
+                  strokeLinecap="round"
+                  strokeWidth="25"
                   stroke="#6c6c6c"
                   d="M79 167.138H259"
                 ></path>
@@ -75,9 +77,9 @@ export default function Home({ isLoggedIn }) {
                 d="M646.293 331.888L17.7538 17.6187L155.245 331.888M646.293 331.888L17.753 646.157L155.245 331.888M646.293 331.888L318.735 330.228L155.245 331.888"
               ></path>
               <path
-                stroke-linejoin="round"
-                stroke-linecap="round"
-                stroke-width="33.67"
+                strokeLinejoin="round"
+                strokeLinecap="round"
+                strokeWidth="33.67"
                 stroke="#6c6c6c"
                 d="M646.293 331.888L17.7538 17.6187L155.245 331.888M646.293 331.888L17.753 646.157L155.245 331.888M646.293 331.888L318.735 330.228L155.245 331.888"
               ></path>
