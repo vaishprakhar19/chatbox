@@ -1,7 +1,7 @@
 import React from 'react';
 import { auth, db, provider } from "../firebase-config";
 import { signInWithPopup } from "firebase/auth";
-import { Timestamp, addDoc, collection } from 'firebase/firestore';
+import { Timestamp, addDoc, collection, doc, setDoc } from 'firebase/firestore';
 import "./login.css";
 
 const Login = ({ setIsLoggedIn, setLoginTime }) => {
@@ -13,6 +13,12 @@ const Login = ({ setIsLoggedIn, setLoginTime }) => {
       localStorage.setItem("isLoggedIn", true);
       setLoginTime(currentLoginTime);
       localStorage.setItem('loginTime', currentLoginTime.toDate().toString());
+
+      const userRef = doc(db, 'activeUsers', auth.currentUser.uid);
+      await setDoc(userRef, {
+        userName: auth.currentUser.displayName,
+        status: 'online'
+      }, { merge: true });
 
       // Emit a message indicating the user has joined
       const collectionRef = collection(db, "messages");

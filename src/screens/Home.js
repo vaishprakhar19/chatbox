@@ -1,12 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { addDoc, collection, onSnapshot, orderBy, query, where } from "firebase/firestore";
+import { addDoc, collection, getDocs, onSnapshot, orderBy, query, where } from "firebase/firestore";
 import { auth, db } from "../firebase-config";
 import { Timestamp } from "firebase/firestore";
 import "./home.css";
 
-export default function Home({ isLoggedIn , loginTime}) {
+export default function Home({ isLoggedIn, loginTime }) {
   const [messageList, setMessageList] = useState([]);
   const messagesEndRef = useRef(null);
+  const [activeUsers, setActiveUsers] = useState([]);
+  const [showActiveUsers, setShowActiveUsers] = useState(false);
   console.log(messageList);
 
   const sendMessage = async () => {
@@ -38,9 +40,29 @@ export default function Home({ isLoggedIn , loginTime}) {
   }, [messageList]);
 
 
+  const fetchActiveUsers = async () => {
+    const activeUsersRef = collection(db, "activeUsers");
+    const activeUsersSnapshot = await getDocs(activeUsersRef);
+    const activeUsersList = activeUsersSnapshot.docs.map(doc => doc.data());
+    setActiveUsers(activeUsersList);
+    
+  }
+
   return (
     <div className='home'>
+        {showActiveUsers && (
+        <div className='active-users-list'>
+          <button className="close-button" onClick={() => setShowActiveUsers(false)}>X</button>
+          <h3>Active Users</h3>
+          <ul>
+            {activeUsers.map((user, index) => (
+              <li key={index}>{user.userName}</li>
+            ))}
+          </ul>
+        </div>
+      )}
       <div className='input-box'>
+        <div className="active-users-button" onClick={() => {if(showActiveUsers){setShowActiveUsers(false)} else{fetchActiveUsers(); setShowActiveUsers(true)} }}></div>
         <div className='message-input'>
           {/* <div class="fileUploadWrapper">
             <label for="file">

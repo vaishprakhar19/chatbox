@@ -2,7 +2,7 @@ import React from 'react';
 import "./navbar.css";
 import { auth, db } from "../firebase-config"
 import { signOut } from "firebase/auth"
-import { Timestamp, addDoc, collection } from 'firebase/firestore';
+import { Timestamp, addDoc, collection, doc, updateDoc } from 'firebase/firestore';
 import logo from "../resources/chatbox-logo.png"
 
 function Navbar({ setIsLoggedIn, isLoggedIn }) {
@@ -21,7 +21,16 @@ function Navbar({ setIsLoggedIn, isLoggedIn }) {
                 system: true, // Flag to indicate system message
                 date: currentLoginTime
             });
-                await signOut(auth);
+
+            const user = auth.currentUser;
+            const userRef = doc(db, 'activeUsers', user.uid);
+
+            // Update user status to offline
+            await updateDoc(userRef, {
+                status: 'offline'
+            });
+
+            await signOut(auth);
             setIsLoggedIn(false);
             localStorage.clear();
         }
