@@ -4,6 +4,7 @@ import { collection, onSnapshot } from 'firebase/firestore';
 import { auth, db } from '../firebase-config';
 import { Link } from 'react-router-dom';
 import { useAppState } from '../AppStateContext';
+import logo from "../resources/chatbox-logo.png"
 
 const Home = () => {
     const { setActiveUsers, activeUsers, setChatUserName, setChatUserProfilePic, setIsGroupChat, setChatUID } = useAppState()
@@ -31,7 +32,7 @@ const Home = () => {
     return (
         <div className='home'>
             <Link className='chatbox' onClick={handleGroupChat} to="/chat">
-                <img className='profile-img' alt='profile' src={"https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"}></img>
+                <img className='profile-img' alt='profile' src={logo}></img>
                 <div className='chat-username'>Group Chat</div>
             </Link>
             {
