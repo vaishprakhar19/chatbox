@@ -1,20 +1,22 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import './App.css';
-import Home from "./screens/Home";
+import Chat from "./screens/Chat";
 import Navbar from "./components/Navbar";
 import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import Login from './screens/Login';
+import Home from './screens/Home';
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { auth } from './firebase-config';
 import { Comment } from 'react-loader-spinner';
-import { Timestamp } from 'firebase/firestore';
+import { useAppState } from './AppStateContext';
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem("isLoggedIn"));
-  const [loading, setLoading] = useState(true);
-  const [showActiveUsers, setShowActiveUsers] = useState(false);
-  const [activeUsers, setActiveUsers] = useState([]);
-  const [loginTime, setLoginTime] = useState(localStorage.getItem("loginTime") ? Timestamp.fromDate(new Date(localStorage.getItem("loginTime"))) : null);
+  const {
+    isLoggedIn,
+    setIsLoggedIn,
+    setLoading,
+    loading
+  } = useAppState();
   useEffect(() => {
     AOS.init();
     AOS.refresh();
@@ -33,6 +35,7 @@ function App() {
     });
 
     return () => unsubscribe();
+    // eslint-disable-next-line
   }, []);
 
   if (loading) {
@@ -51,17 +54,18 @@ function App() {
 
   return (
     <div className="App">
-      {isLoggedIn && <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} activeUsers={activeUsers} showActiveUsers={showActiveUsers} setShowActiveUsers={setShowActiveUsers} />}
+      {isLoggedIn && <Navbar />}
       <Router>
         <Routes>
           {isLoggedIn ? (
             <>
-              <Route path='/home' element={<Home isLoggedIn={isLoggedIn} loginTime={loginTime} setActiveUsers={setActiveUsers} activeUsers={activeUsers} showActiveUsers={showActiveUsers} setShowActiveUsers={setShowActiveUsers} />} />
+              <Route path='/home' element={<Home />} />
+              <Route path='/chat' element={<Chat />} />
               <Route path="*" element={<Navigate to="/home" />} />
             </>
           ) : (
             <>
-              <Route path='/' element={<Login setIsLoggedIn={setIsLoggedIn} setLoginTime={setLoginTime} />} />
+              <Route path='/' element={<Login />} />
               <Route path="*" element={<Navigate to="/" />} />
             </>
           )}

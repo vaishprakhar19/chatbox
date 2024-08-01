@@ -5,7 +5,9 @@
   font-family: 'Raleway', sans-serif;
 
 }
-
+body,html{
+  overscroll-behavior:none;
+}
 .home {
   margin-top: 80px;
 }

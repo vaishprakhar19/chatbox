@@ -3,8 +3,10 @@ import { auth, db, provider } from "../firebase-config";
 import { signInWithPopup } from "firebase/auth";
 import { Timestamp, addDoc, collection, doc, setDoc } from 'firebase/firestore';
 import "./login.css";
+import { useAppState } from '../AppStateContext';
 
-const Login = ({ setIsLoggedIn, setLoginTime }) => {
+const Login = () => {
+  const { setIsLoggedIn, setLoginTime } = useAppState();
   const login = async () => {
     try {
       await signInWithPopup(auth, provider);
@@ -17,6 +19,8 @@ const Login = ({ setIsLoggedIn, setLoginTime }) => {
       const userRef = doc(db, 'activeUsers', auth.currentUser.uid);
       await setDoc(userRef, {
         userName: auth.currentUser.displayName,
+        photoUrl: auth.currentUser.photoURL,
+        uid: auth.currentUser.uid,
         status: 'online'
       }, { merge: true });
 
