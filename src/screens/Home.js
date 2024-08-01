@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import './home.css'
 import { collection, onSnapshot } from 'firebase/firestore';
 import { auth, db } from '../firebase-config';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useAppState } from '../AppStateContext';
 
 const Home = () => {
