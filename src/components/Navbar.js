@@ -7,7 +7,7 @@ import logo from "../resources/chatbox-logo.png"
 import { useAppState } from '../AppStateContext';
 
 function Navbar() {
-    const { setIsLoggedIn, activeUsers, setShowActiveUsers, isGroupChat, chatUserProfilepPic, chatUserName } = useAppState();
+    const { setIsLoggedIn, activeUsers, setShowActiveUsers, isGroupChat, chatUserName } = useAppState();
     // const [showNavLinks, setShowNavLinks] = useState(false);
 
     // const toggleNavLinks = () => {
