@@ -20,6 +20,11 @@ const Home = () => {
             unsubActiveUsers();
         }; // Cleanup subscriptions on unmount  
     }, [setActiveUsers]);
+
+    useEffect(() => {
+        setIsGroupChat(false)
+        // eslint-disable-next-line
+    }, [])
     console.log(activeUsers)
     const handleChatLink = (user) => {
         setChatUserProfilePic(user.photoUrl);
