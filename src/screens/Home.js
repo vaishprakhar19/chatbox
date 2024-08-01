@@ -28,7 +28,7 @@ const Home = () => {
         setChatUserProfilePic('')
         // eslint-disable-next-line
     }, [])
-    console.log(activeUsers)
+    // console.log(activeUsers)
     const handleChatLink = (user) => {
         setChatUserProfilePic(user.photoUrl);
         setChatUserName(user.userName);

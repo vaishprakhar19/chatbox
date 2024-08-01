@@ -6,9 +6,9 @@ import "./chat.css";
 import { useAppState } from '../AppStateContext';
 
 export default function Chat() {
-  const { messageList, setMessageList, isLoggedIn, loginTime, activeUsers, setActiveUsers, setShowActiveUsers, showActiveUsers, isGroupChat, chatUID, setLoading } = useAppState()
+  const { messageList, setMessageList, isLoggedIn, loginTime, activeUsers, setActiveUsers, setShowActiveUsers,chatUserProfilePic, showActiveUsers, isGroupChat, chatUID } = useAppState()
   const messagesEndRef = useRef(null);
-  console.log(messageList);
+  // console.log(messageList);
 
   const sendMessage = async () => {
     const collectionRef = collection(db, "messages");
@@ -22,6 +22,7 @@ export default function Chat() {
     messagesEndRef.current?.scrollIntoView({ behavior: "auto" });
   }
   console.log(chatUID)
+  console.log(chatUserProfilePic)
   useEffect(() => {
     if (isLoggedIn && loginTime) {
       const collectionRef = collection(db, "messages");
