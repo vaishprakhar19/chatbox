@@ -14,20 +14,20 @@ export default function Chat() {
     const collectionRef = collection(db, "messages");
     const message = document.getElementById("messageInput").value;
     const date = Timestamp.now();
-    await addDoc(collectionRef, { message, author: auth.currentUser.displayName, date, messageUID: auth.currentUser.uid });
+    await addDoc(collectionRef, { message, author: auth.currentUser.displayName, date, messageUID: auth.currentUser.uid, isGroupChatMessage: isGroupChat });
     document.getElementById("messageInput").value = ""; // Clear input after sending
   }
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "auto" });
   }
-console.log(chatUID)
+  console.log(chatUID)
   useEffect(() => {
     if (isLoggedIn && loginTime) {
       const collectionRef = collection(db, "messages");
-      let q=''
-     if(isGroupChat){ q = query(collectionRef, orderBy("date"), where("date", ">", loginTime)); }// Filter messages based on login time
-      else{q = query(collectionRef, orderBy('date'), where('messageUID', 'in', [auth.currentUser.uid, chatUID]))}
+      let q = ''
+      if (isGroupChat) { q = query(collectionRef, orderBy("date"), where("date", ">", loginTime), where('isGroupChatMessage', '==', true)); }// Filter messages based on login time
+      else { q = query(collectionRef, orderBy('date'), where('messageUID', 'in', [auth.currentUser.uid, chatUID]), where('isGroupChatMessage', '==', false)) }
       const unsubMessages = onSnapshot(q, (snapshot) => {
         setMessageList(snapshot.docs.map((item) => ({ ...item.data(), id: item.id })));
         scrollToBottom();
