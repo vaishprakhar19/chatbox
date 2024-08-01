@@ -1,12 +1,12 @@
 import React, { useEffect, useRef } from 'react';
-import { addDoc, collection, onSnapshot, orderBy, query, where } from "firebase/firestore";
+import { addDoc, and, collection, onSnapshot, or, orderBy, query, where } from "firebase/firestore";
 import { auth, db } from "../firebase-config";
 import { Timestamp } from "firebase/firestore";
 import "./chat.css";
 import { useAppState } from '../AppStateContext';
 
 export default function Chat() {
-  const { messageList, setMessageList, isLoggedIn, loginTime, activeUsers, setActiveUsers, setShowActiveUsers, showActiveUsers, isGroupChat, chatUID } = useAppState()
+  const { messageList, setMessageList, isLoggedIn, loginTime, activeUsers, setActiveUsers, setShowActiveUsers, showActiveUsers, isGroupChat, chatUID, setLoading } = useAppState()
   const messagesEndRef = useRef(null);
   console.log(messageList);
 
@@ -14,7 +14,7 @@ export default function Chat() {
     const collectionRef = collection(db, "messages");
     const message = document.getElementById("messageInput").value;
     const date = Timestamp.now();
-    await addDoc(collectionRef, { message, author: auth.currentUser.displayName, date, messageUID: auth.currentUser.uid, isGroupChatMessage: isGroupChat });
+    await addDoc(collectionRef, { message, author: auth.currentUser.displayName, date, messageUID: auth.currentUser.uid, isGroupChatMessage: isGroupChat, recepient: (isGroupChat ? null : chatUID) });
     document.getElementById("messageInput").value = ""; // Clear input after sending
   }
 
@@ -27,7 +27,21 @@ export default function Chat() {
       const collectionRef = collection(db, "messages");
       let q = ''
       if (isGroupChat) { q = query(collectionRef, orderBy("date"), where("date", ">", loginTime), where('isGroupChatMessage', '==', true)); }// Filter messages based on login time
-      else { q = query(collectionRef, orderBy('date'), where('messageUID', 'in', [auth.currentUser.uid, chatUID]), where('isGroupChatMessage', '==', false)) }
+      else {
+        q = query(collectionRef, orderBy('date'),
+          and(
+            where('isGroupChatMessage', '==', false),
+            or(
+              and(
+                where('messageUID', '==', auth.currentUser.uid), where('recepient', '==', chatUID)
+              ),
+              and(
+                where('messageUID', '==', chatUID), where('recepient', '==', auth.currentUser.uid)
+              )
+            )
+          )
+        )
+      }
       const unsubMessages = onSnapshot(q, (snapshot) => {
         setMessageList(snapshot.docs.map((item) => ({ ...item.data(), id: item.id })));
         scrollToBottom();
@@ -42,8 +56,9 @@ export default function Chat() {
         unsubMessages();
         unsubActiveUsers();
       }; // Cleanup subscriptions on unmount
-    }// eslint-disable-next-line
-  }, [isLoggedIn, loginTime, setActiveUsers]);
+    }
+    // eslint-disable-next-line
+  }, []);
 
   useEffect(() => {
     scrollToBottom();
@@ -93,7 +108,7 @@ export default function Chat() {
             </label>
             <input type="file" id="file" name="file" />
           </div> */}
-          <input required="" placeholder="Message..." type="text" id="messageInput" />
+          <input required="" placeholder="Message..." type="text" id="messageInput" autoComplete='off'/>
           <button id="sendButton" onClick={sendMessage}>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 664 663">
               <path

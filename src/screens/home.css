@@ -3,7 +3,7 @@
 }
 
 .chatbox{
-    border-top:0.5px solid var(--blue);
+    border-bottom:2px solid var(--blue);
     display: flex;
     padding:10px;
     justify-content: flex-start;
@@ -12,7 +12,4 @@
     cursor: pointer;
     text-decoration: none;
     color: var(--blue);
-}
-.chatbox:last-of-type{
-    border-bottom:1px solid var(--blue);
 }
